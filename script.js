@@ -21,8 +21,17 @@ const z = function () {
     console.log('latitude: ', latitude, 'longitude: ', longitude);
 
     // display location on map
-    const mapUrl = `https://www.google.com/maps/@${latitude},${longitude},15z`;
-    mapBox.innerHTML = `<iframe src="${mapUrl}"></iframe>`
+    displayMap(latitude, longitude);
+    function displayMap(latitude, longitude) {
+      const mapUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&output=embed`;
+      const iframe = document.createElement('iframe');
+      iframe.setAttribute('src', mapUrl);
+      iframe.setAttribute('width', '100%');
+      iframe.setAttribute('height', '100%');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('style', 'border:0');
+      mapBox.appendChild(iframe);
+    }
 
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
       .then((r) => r.json())
@@ -30,29 +39,29 @@ const z = function () {
         // following data should be added to the table as elements
         const html = `
         <tr>
-        <td>Location:  ${data.name}</td>
+        <td><b>Location:</b>  ${data.name}</td>
         </tr>
         <tr>
-        <td>Lat:  ${latitude}</td>
-        <td>Long:  ${longitude}</td>
+        <td><b>Lat:</b>  ${latitude}</td>
+        <td><b>Long:</b>  ${longitude}</td>
         </tr>
         <tr>
-        <td>Timezone:  ${data.timezone}</td>
+        <td><b>Timezone:</b>  ${data.timezone}</td>
         </tr>
         <tr>
-        <td>Wind Speed:  ${data.wind.speed}</td>
+        <td><b>Wind Speed:</b>  ${data.wind.speed}</td>
         </tr>
         <tr>
-        <td>Humidity:  ${data.main.humidity}</td>
+        <td><b>Humidity:</b>  ${data.main.humidity}</td>
         </tr>
         <tr>
-        <td>Wind Direction(in deg):  ${data.wind.deg}</td>
+        <td><b>Wind Direction(in deg):</b>  ${data.wind.deg}</td>
         </tr>
         <tr>
-        <td>Pressure:  ${data.main.pressure}</td>
+        <td><b>Pressure:</b>  ${data.main.pressure}</td>
         </tr>
         <tr>
-        <td>Feels Like:${data.main.feels_like}</td>
+        <td><b>Feels Like:</b>${data.main.feels_like}</td>
         </tr>
         `
         tableEl.innerHTML = html;
